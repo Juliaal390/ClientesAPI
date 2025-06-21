@@ -1,5 +1,6 @@
 using ClientesAPI.Data;
 using ClientesAPI.Integration.ViaCepAPI.Refit;
+using ClientesAPI.Middleware.Exceptions;
 using ClientesAPI.Repositories;
 using ClientesAPI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +40,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// Middleware
+app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
