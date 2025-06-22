@@ -56,20 +56,29 @@ namespace ClientesAPI.Controller
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(int id, [FromBody] ContatoDTO contato)
+        public async Task<ActionResult> Put(int id, [FromBody] ContatoUpdateDTO contatoInput)
         {
-            if (contato is null)
+            if (contatoInput is null)
             {
                 return BadRequest();
             }
 
-            if (id != contato.Id)
+            if (id != contatoInput.Id)
             {
                 return BadRequest();
             }
 
-            await _service.Update(contato);
-            return Ok(contato);
+            var contatoExistente = await _service.GetWithNoTracking(id);
+            if (contatoExistente is null)
+            {
+                return NotFound("Contato não encontrado");
+            }
+
+            contatoExistente.Tipo = contatoInput.Tipo;
+            contatoExistente.Texto = contatoInput.Texto;
+
+            await _service.Update(contatoExistente);
+            return Ok(contatoExistente);
         }
 
         [HttpDelete("{id:int}")]

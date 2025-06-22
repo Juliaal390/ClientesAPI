@@ -40,7 +40,7 @@ namespace ClientesAPI.Repositories
 
         public async Task<ContatoModel> GetWithNoTracking(int id)
         {
-            return await _context.Contatos.Where(e => e.Id == id).FirstOrDefaultAsync();
+            return await _context.Contatos.AsNoTracking().Where(e => e.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<ContatoModel> Update(ContatoModel contato)
