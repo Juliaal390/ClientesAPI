@@ -34,6 +34,12 @@ namespace ClientesAPI.Services
             return _mapper.Map<ContatoDTO>(contato);
         }
 
+        public async Task<ContatoDTO> GetWithNoTracking(int id)
+        {
+            var contato = await _repository.GetWithNoTracking(id);
+            return _mapper.Map<ContatoDTO>(contato);
+        }
+
         public async Task Remove(int id)
         {
             var contato = _repository.GetById(id).Result;

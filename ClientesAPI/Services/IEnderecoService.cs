@@ -7,6 +7,7 @@ namespace ClientesAPI.Services
     {
         Task<IEnumerable<EnderecoDTO>> GetAll();
         Task<EnderecoDTO> GetById(int id);
+        Task<EnderecoDTO> GetWithNoTracking(int id);
         Task Add(EnderecoDTO endereco);
         Task Update(EnderecoDTO endereco);
         Task Remove(int id);

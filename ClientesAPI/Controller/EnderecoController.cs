@@ -1,6 +1,7 @@
 ﻿using ClientesAPI.DTOs;
 using ClientesAPI.Integration.ViaCepAPI.Refit;
 using ClientesAPI.Integration.ViaCepAPI.Response;
+using ClientesAPI.Models;
 using ClientesAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -48,14 +49,14 @@ namespace ClientesAPI.Controller
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromForm] string cep, [FromForm] string numero)
+        public async Task<ActionResult> Post([FromBody] EnderecoCreateDTO enderecoInput)
         {
-            if (cep is null || numero is null)
+            if (enderecoInput.Cep is null || enderecoInput.Numero is null)
             {
                 return BadRequest("Endereço inválido");
             }
 
-            var dadosCep = await _viaCep.GetByCep(cep);
+            var dadosCep = await _viaCep.GetByCep(enderecoInput.Cep);
 
             if(dadosCep is null)
             {
@@ -67,8 +68,9 @@ namespace ClientesAPI.Controller
                 Cep = dadosCep.Cep,
                 Logradouro = dadosCep.Logradouro,
                 Cidade = dadosCep.Localidade,
-                Numero = numero,
-                Complemento = dadosCep.Complemento
+                Numero = enderecoInput.Numero,
+                Complemento = enderecoInput.Complemento,
+                ClienteId = enderecoInput.ClienteId
             };
 
             await _service.Add(endereco);
@@ -77,36 +79,39 @@ namespace ClientesAPI.Controller
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(int id, [FromBody] EnderecoDTO endereco)
+        public async Task<ActionResult> Put(int id, [FromBody] EnderecoUpdateDTO enderecoInput)
         {
-            if (endereco is null)
+            if (enderecoInput.Cep is null || enderecoInput.Numero is null)
+            {
+                return BadRequest("Endereço inválido");
+            }
+
+            if (id != enderecoInput.Id)
             {
                 return BadRequest();
             }
-
-            if(id != endereco.Id)
+                
+            var enderecoExistente = await _service.GetWithNoTracking(id);
+            if (enderecoExistente is null)
             {
-                return BadRequest();
+                return NotFound("Endereço não encontrado");
             }
 
-            var dadosCep = await _viaCep.GetByCep(endereco.Cep);
+            var dadosCep = await _viaCep.GetByCep(enderecoInput.Cep);
 
             if (dadosCep is null)
             {
                 return BadRequest("CEP inválido");
             }
 
-            var novoEndereco = new EnderecoDTO
-            {
-                Cep = dadosCep.Cep,
-                Logradouro = dadosCep.Logradouro,
-                Cidade = dadosCep.Localidade,
-                Numero = endereco.Numero,
-                Complemento = dadosCep.Complemento
-            };
+            enderecoExistente.Cep = dadosCep.Cep;
+            enderecoExistente.Logradouro = dadosCep.Logradouro;
+            enderecoExistente.Cidade = dadosCep.Localidade;
+            enderecoExistente.Numero = enderecoInput.Numero;
+            enderecoExistente.Complemento = enderecoInput.Complemento;
 
-            await _service.Add(novoEndereco);
-            return new CreatedAtRouteResult("GetAddress", new { id = endereco.Id }, endereco);
+            await _service.Update(enderecoExistente);
+            return Ok(enderecoExistente);
 
         }
 

@@ -89,7 +89,8 @@ namespace ClientesAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Complemento")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Logradouro")
                         .HasColumnType("nvarchar(max)");

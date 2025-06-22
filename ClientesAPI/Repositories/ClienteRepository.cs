@@ -38,6 +38,11 @@ namespace ClientesAPI.Repositories
             return await _context.Clientes.Where(e => e.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<ClienteModel> GetWithNoTracking(int id)
+        {
+            return await _context.Clientes.AsNoTracking().Where(e => e.Id == id).FirstOrDefaultAsync();
+        }
+
         public async Task<ClienteModel> Update(ClienteModel cliente)
         {
             _context.Entry(cliente).State = EntityState.Modified;

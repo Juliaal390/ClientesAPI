@@ -38,9 +38,16 @@ namespace ClientesAPI.Repositories
             return await _context.Contatos.Where(e => e.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task<ContatoModel> Update(ContatoModel contato)
+        public async Task<ContatoModel> GetWithNoTracking(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Contatos.Where(e => e.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<ContatoModel> Update(ContatoModel contato)
+        {
+            _context.Entry(contato).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return contato;
         }
     }
 }

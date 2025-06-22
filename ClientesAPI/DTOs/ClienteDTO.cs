@@ -12,7 +12,7 @@ namespace ClientesAPI.DTOs
         [MinLength(3)]
         [MaxLength(100)]
         public string? Nome { get; set; }
-
+        [DateType("dd/MM/yyyy")]
         public string? DataCadastro { get; set; }
 
         [JsonIgnore]

@@ -37,6 +37,12 @@ namespace ClientesAPI.Services
             return _mapper.Map<EnderecoDTO>(endereco);
         }
 
+        public async Task<EnderecoDTO> GetWithNoTracking(int id)
+        {
+            var endereco = await _repository.GetWithNoTracking(id);
+            return _mapper.Map<EnderecoDTO>(endereco);
+        }
+
         public async Task Remove(int id)
         {
             var endereco = _repository.GetById(id).Result;
@@ -48,5 +54,6 @@ namespace ClientesAPI.Services
             var enderecoEntity = _mapper.Map<EnderecoModel>(endereco);
             await _repository.Update(enderecoEntity);
         }
+
     }
 }

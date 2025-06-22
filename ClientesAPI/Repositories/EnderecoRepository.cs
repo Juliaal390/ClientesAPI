@@ -38,6 +38,11 @@ namespace ClientesAPI.Repositories
             return await _context.Enderecos.Where(e => e.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<EnderecoModel> GetWithNoTracking(int id)
+        {
+            return await _context.Enderecos.AsNoTracking().Where(e => e.Id == id).FirstOrDefaultAsync();
+        }
+
         public async Task<EnderecoModel> Update(EnderecoModel endereco)
         {
             _context.Entry(endereco).State = EntityState.Modified;

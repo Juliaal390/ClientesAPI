@@ -34,7 +34,7 @@ namespace ClientesAPI.Controller
             var contato = await _service.GetById(id);
             if (contato is null)
             {
-                return NotFound("O contato não foi encontrado");
+                return NotFound("Contato não encontrado");
             }
 
             return Ok(contato);

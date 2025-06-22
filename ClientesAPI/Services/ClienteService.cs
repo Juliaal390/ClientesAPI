@@ -40,6 +40,12 @@ namespace ClientesAPI.Services
             return _mapper.Map<ClienteDTO>(cliente);
         }
 
+        public async Task<ClienteDTO> GetWithNoTracking(int id)
+        {
+            var cliente = await _repository.GetWithNoTracking(id);
+            return _mapper.Map<ClienteDTO>(cliente);
+        }
+
         public async Task Update(ClienteDTO cliente)
         {
             var clienteEntity = _mapper.Map<ClienteModel>(cliente);

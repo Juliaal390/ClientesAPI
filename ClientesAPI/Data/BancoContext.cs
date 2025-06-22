@@ -40,6 +40,9 @@ namespace ClientesAPI.Data
                    .IsRequired()
                    .HasMaxLength(9);
 
+            mb.Entity<EnderecoModel>().Property(e => e.Complemento)
+                .HasMaxLength(100);
+
             mb.Entity<EnderecoModel>().HasOne(e => e.Cliente)
                    .WithOne(c => c.Endereco)
                    .HasForeignKey<EnderecoModel>(e => e.ClienteId)

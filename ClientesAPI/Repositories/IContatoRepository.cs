@@ -6,6 +6,7 @@ namespace ClientesAPI.Repositories
     {
         Task<IEnumerable<ContatoModel>> GetAll();
         Task<ContatoModel> GetById(int id);
+        Task<ContatoModel> GetWithNoTracking(int id);
         Task<ContatoModel> Create(ContatoModel contato);
         Task<ContatoModel> Update(ContatoModel contato);
         Task<ContatoModel> Delete(int id);

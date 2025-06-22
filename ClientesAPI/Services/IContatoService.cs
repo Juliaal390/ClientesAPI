@@ -6,6 +6,7 @@ namespace ClientesAPI.Services
     {
         Task<IEnumerable<ContatoDTO>> GetAll();
         Task<ContatoDTO> GetById(int id);
+        Task<ContatoDTO> GetWithNoTracking(int id);
         Task Add(ContatoDTO contato);
         Task Update(ContatoDTO contato);
         Task Remove(int id);

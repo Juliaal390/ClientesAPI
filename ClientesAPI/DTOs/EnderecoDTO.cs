@@ -7,7 +7,6 @@ namespace ClientesAPI.DTOs
     public class EnderecoDTO
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "O Cep é obrigatório")]
         public string? Cep { get; set; }
         public string? Logradouro { get; set; }
         public string? Cidade { get; set; }
